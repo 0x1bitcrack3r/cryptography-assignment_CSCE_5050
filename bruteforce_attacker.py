@@ -24,9 +24,7 @@ def key_finder(message,cipher,nonce):
         generated_key = fixed_key_pad + i.to_bytes(bytes_length,byteorder='big')
         message_bytes = decryptor_CTR(cipher, nonce, generated_key)
         if string_to_bytes(message) == message_bytes:
-            message_text=message_bytes.decode('utf-8').encode('cp1252').decode('utf-8')
-            global key_found
-            key_found = "Key for message: "+message_text+"\n"+"key: "+key.hex()+"\n"
+            key_found = "Key for message: "+message+"\n"+"key: "+generated_key.hex()
             print(key_found)
         number_of_keys = i
 
@@ -47,7 +45,7 @@ def main():
     thread.start()
     while not key_available.wait(timeout=5):
         print('\r{} keys searched...'.format(number_of_keys), end='', flush=True)
-    print('\r{} keys searched...\n'.format(number_of_keys))
+    print('\r{} keys searched...'.format(number_of_keys))
 
 if __name__ == '__main__':
     main()
